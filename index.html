@@ -24,8 +24,353 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+                    <h1>JPA & Hibernate</h1>
+                    <h3>Object-Relational Mapping</h3>
+                    <p><small>Bauhaus-Universität Weimar</small></p>
+                    <p><small>Artur Solomonik</small></p>
+                </section>
+                
+                <section>
+                    <section data-background="/pumpkin.jpg">
+                        <img class="fragment" src="farmer.png" width="60%">
+                    
+                    </section>
+                    <section data-background="">
+                        <h3>Datenspeicherung</h3>
+                        <div style="margin: 50px">
+                        <img width="15%" data-fragment-index="1" class="fragment" src="book.png">
+                        <img width="15%" data-fragment-index="2" class="fragment" src="list.png">
+                        <img width="15%" data-fragment-index="3" class="fragment" src="csv.png">
+                        </div>
+                        <p data-fragment-index="4" class="fragment"><span data-fragment-index="6" class="fragment highlight-green">Komplexe</span> Daten <span class="fragment highlight-red" data-fragment-index="7">bequem</span> hinzufügen, entfernen und bearbeiten</p>
+                        <img width="15%" class="fragment" data-fragment-index="5" src="db.png">
+                    </section>
+                </section>
+                
+                <section>
+                    <h2>Datenbanken</h2>
+                    <q cite="http://wirtschaftslexikon.gabler.de/Definition/datenbank.html"><span class="fragment highlight-blue">Selbstständige, auf Dauer und flexiblen und sicheren Gebrauch ausgelegte Datenorganisation</span>, die sowohl eine Datenbasis als auch eine zugehörige Datenverwaltung (DBMS) umfasst. Eine Datenbank dient dazu, eine <span class="fragment highlight-blue">große Menge von Daten strukturiert zu speichern und zu verwalten</span>.</q>
+                </section>
+                
+                <section>
+                    <section>
+                        <h2>Erster Versuch</h2>
+                        <img width="70%" src="sql_tables.png">
+                    </section>
+                    <section>
+                        <h2>ER-Diagramm</h2>
+                        <img width="70%" src="er.png">
+                    </section>
+                    <section>
+                        <h2>Neue Daten hinzufügen</h2>
+                        <img width="100%" src="sql_insert.png">
+                        <img class="fragment" width="100%" src="sql_insert2.png">
+                    </section>
+                    <section>
+                        <img width="100%" src="sql_insert3.png">
+                        <img class="fragment" width="90%" src="sql_insert4.png">
+                        <img class="fragment" width="80%" src="sql_insert5.png">
+                    </section>
+                    <section>
+                        <img width="100%" src="r2d2.gif">
+                    </section>
+                    <section>
+                        <h2>Probleme</h2>
+                        <ul>
+                            <li class="fragment">Eingaben per Hand sind mühselig <span class="fragment">(und veraltet)</span></li>
+                            <li class="fragment">Relationen nicht greifbar</li>
+                            <li class="fragment">Für große Projekte umständlich</li>
+                            <li class="fragment">Komplexe Abfragen und Subqueries kosten nur Zeit und Nerven</li>
+                            <li class="fragment">Injektionssicherheit oft übersehen / vergessen</li>
+                            <li class="fragment">Warum so, wenn es auch einfacher geht?</li>
+                            
+                        </ul>
+                    </section>
+                    
+                
+                </section>
+                <section>
+                    <section>
+                        <h1>Object-Relational Mapping (ORM)</h1>  
+                    </section>
+                    <section>
+                        <p>Konvertierung von Daten zweier unterschiedlicher Typdarstellungen</p>
+                        <img src="orm.png">
+                    </section>
+                    <section>
+                        <h2>Grundlegendes Prinzip</h2>
+                        <ul>
+                            <li class="fragment">Konvertierung zwischen Datentupeln und Klassenobjekten</li>
+                            <li class="fragment">Abbildung von Klassen auf Tabellen</li>
+                            <li class="fragment">Reservierung von Klassenattributen in Tabellenspalten</li>
+                            <li class="fragment">Referenzen auf andere Klassen durch Fremdschlüsselbeziehungen realisiert</li>
+                            <li class="fragment">Datenbankkonzepte während der Entwicklung <span class="fragment highlight-red">meistens</span> obsolet</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Shadow Informations</h2>
+                        <ul>
+                            <li class="fragment">Informationen die von der Objektsemantik unabhängig sind</li>
+                            <li class="fragment">Daten zur Identifizierung</li>
+                            <li class="fragment">Hilfsdaten für Zugriffssteuerung</li>
+                            <li class="fragment"><b>Persistenz</b></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Persistenz</h2>
+                        <ul>
+                            <li class="fragment">Daten sollen Gültigkeitsbereich der JVM übersteigen</li>
+                            <li class="fragment">Informationen über lange Zeit behalten abrufen</li>
+                            <li class="fragment">"nicht unkontrolliert veränderlich"</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Warum genau sind die Daten inkompatibel?</h2>
+                        <img src="incomp.gif" height="50%">
+                        
+                    </section>
+                    <section>
+                        <h2>Paradigmenkonflikte</h2>
+                        <table>
+                            <tr>
+                                <th>Konflikt</th>
+                                <th>OOP</th>
+                                <th>RDBMS</th>
+                            </tr>
+                            <tr class="fragment">
+                                <td>Vererbung</td>
+                                <td>Fundamentales Prinzip der OOP</td>
+                                <td>Keine standardisierte Definition</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td>Identität</td>
+                                <td>Objektidentität, Objektgleichheit</td>
+                                <td>Primärschlüssel</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td>Assoziation</td>
+                                <td>Ungerichtete Referenzen</td>
+                                <td>Fremdschlüsselbeziehungen</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td>Navigation</td>
+                                <td>Assoziationen</td>
+                                <td>Queries</td>
+                            </tr>
+                            
+                        </table>
+                    </section>
+                    <section>
+                        <h3>Abbildung von Vererbungshierarchien</h3>
+                        <ul>
+                            <li class="fragment">Vererbung als Grundlage der OOP muss auch in Datenbanken umsetzbar gemacht werden</li>
+                            <li class="fragment">Drei verschiedene Methoden</li>
+                            <li class="fragment">Kombination in verschiedenen Frameworks</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Tabelle pro Vererbungshierarchie</h3>
+                        <img src="inh1.png" height="100%">
+                    </section>
+                    <section>
+                        <h3>Tabelle pro Unterklasse</h3>
+                        <img src="inh2.png" height="100%">
+                    </section>
+                    <section>
+                        <h3>Tabelle pro konkrete Klasse</h3>
+                        <img src="inh3.png" height="100%">
+                    </section>
+                    
+                    <section>
+                        <h2>Design Patterns</h2>
+                    </section>
+                    <section>
+                        <h2>Active Record</h2>
+                        <img src="ar.png">
+                        <ul>
+                            <li>Objekte beinhalten sowohl Daten als auch ihr Verhalten</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Data Mapper</h2>
+                        <img src="dm.png">
+                        <li>Ebene zwischen Datenbank und Objekten</li>
+                    </section>
+                    <section>
+                        <h3><span data-fragment-index="1" class="fragment highlight-blue" >Active Record</span> vs. <span data-fragment-index="2" class="fragment highlight-green">Data Mapper</span></h3>
+                        <ul>
+                            <li class="fragment highlight-blue" data-fragment-index="1">Effiziente Kommunikation mit Crud Repositories</li>
+                            <li class="fragment highlight-green" data-fragment-index="2">Einfache Kommunikation mit verschiedenen Speichermodellen</li>
+                            <li>Zusammenspiel beider Patterns</li>
+                        </ul>
+                        
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>JPA & Hibernate</h1>
+                    </section>
+                    
+                    <section>
+                        <h3>Hibernate <img src="hibernate.png" width="10%"></h3>
+                        <ul>
+                            <li data-fragment-index="1" class="fragment">ORM-Framework für Java</li>
+                            <li data-fragment-index="2" class="fragment">Data Mapper als Design Pattern</li>
+                            <li data-fragment-index="3" class="fragment">Kompatibilität mit anderen Datenbanken</li>
+                            <li data-fragment-index="4" class="fragment">Abbildung über Annotations <span data-fragment-index="6" class="fragment">oder XML-Files (Mapping Files)</span></li>
+                            <li data-fragment-index="5" class="fragment"><span>Generierung von entsprechenden Datenbanktabellen <span data-fragment-index="6" class="fragment">und oder Java-Klassen</span></span></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Relationen in Hibernate</h3>
+                        <ul>
+                            <li data-fragment-index="1" class="fragment">1:1 Relationen durch Objektreferenzen</li>
+                            <li data-fragment-index="2" class="fragment">1:n/n:m Relationen durch (typisierte) Java-Collections</li>
+                            <li data-fragment-index="1" class="fragment">Eager loading: Objekte in Relation sofort mitgeladen </li>
+                            <li data-fragment-index="2" class="fragment">Lazy loading: Objekte in Relation geladen, wenn sie benötigt werden</li>
+                            <li data-fragment-index="3" class="fragment">Reflexive Beziehungen auf eigene Klasse</li>
+                            <li data-fragment-index="4" class="fragment">Operationen <span class="fragment highlight-green">kaskadieren</span> über Relationen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Weitere Besonderheiten</h3>
+                        <ul>
+                            <li class="fragment">Alle drei Arten der Abbildung von Vererbungsbeziehungen</li>
+                            <li class="fragment">Wahlfreie Abbildung von Java-Typen auf SQL-Typen</li>
+                            <li class="fragment">Java-Enums auf Integer abgebildet oder auf mehrere einzelne Tabellenspalten verteilt</li>
+                            <li class="fragment">Hibernate Query Language (HQL) als eigene Sprache für objektorientierte Abfragen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Sessionfactories, Sessions und Transactions</h3>
+                        <ul>
+                            <li class="fragment"><b>Sessionfactories</b> laden alle Einstellungen und Abbildungen zu Programmstart</li>
+                            <li class="fragment"><b>Sessions</b> enthalten alle Methoden für Datenbank-Operationen wie Insert, Update und verschiedene Query-Befehle</li>
+                            <li class="fragment"><b>Transactions</b> regeln unverschachtelt den Datenfluss zwischen den einzelnen Ebenen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Java Persistence API</h3>
+                        <ul>
+                            <li class="fragment"><b>Spezifikation</b> der Schnittstelle zwischen Klassenobjekten und Datentupeln</li>
+                            <li class="fragment"><b>Keine Implementierungen und keine Funktionalitäten</b></li>
+                            <li class="fragment">Definition bestimmter Regeln, die von entsprechenden ORM Providern eingehalten werden <span class="fragment">(wie Hibernate)</span></li>
+                        </ul>
+                    </section>
+                    <section data-background="dance.gif">
+                        <q>JPA is the dance, Hibernate is the dancer.</q>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </section>
+                </section>
+                <section>
+                    <section data-background="/pumpkin.jpg">
+                        <img class="fragment" src="farmer.png" width="60%">
+                    </section>
+                    <section>
+                        <h3>Maven Dependencies</h3>
+                        <img class="stretch" src="mvn.png">
+                    </section>
+                    <section>
+                        <h3>Imports für Entities</h3>
+                        <img class="stretch" src="import.png">
+                    </section>
+                    <section>
+                        <h3>Klassendefinition einer Entity</h3>
+                        <img class="stretch" src="entity.png">
+                    </section>
+                    <section>
+                        <h3>Definition von Relationen (1:n)</h3>
+                        <img src="mtoo.png">
+                    </section>
+                    <section>
+                        <h3>Definition von Relationen (n:m)</h3>
+                        <img src="mtom.png">
+                    </section>
+                    <section>
+                        <h3>Anmerkungen</h3>
+                        <ul>
+                            <li data-fragment-index="1" class="fragment">Hibernate benennt Klassen und Variablen für Tabellen um</li>
+                            <li data-fragment-index="2" class="fragment">Strategien zur Namensgebung in der <b>application.properties</b> festlegen</li>
+                            <li class="fragment" data-fragment-index="3">Grundlegende Kenntnisse in relationalen Datenbankschemata notwendig</li>
+                            <li class="fragment" data-fragment-index="4">Collection für N:M-Beziehung den Umständen entsprechend anpassen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h1>CRUD</h1>
+                        <h3>Create Read Update Delete</h3>
+                    </section>
+                    <section>
+                        <h3>CRUD-Repositories</h3>
+                        <ul>
+                            <li>Repositories als Spielraum für alle Anfragen</li>
+                            <li>Viele verschiedene Ansätze über ORM anzufragen</li>
+                            <li>Mit Springboot: <b>CRUD-Repositories</b></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Queries in CRUD</h3>
+                        <img class="stretch" src="query.png">
+                    </section>
+                    <section data-background="/pumpkin.jpg">
+                        <img style="float:left" class="fragment" src="farmer.png" width="60%">
+                        <img class="fragment" src="api.png" width="20%">
+                        <img class="fragment" src="vue.png" width="20%">
+                        <img class="fragment" src="amazon.png" width="20%">
+                        <img style="position:fixed; right: 50px; bottom: 220px" class="fragment" src="csv.png" width="30%">
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>ORM-Kontroverse</h2>
+                        <ul>
+                            <li class="fragment">Unter vielen Entwicklern verpönt</li>
+                            <li class="fragment">ORM als <b>Anti-Pattern</b></li>
+                            <li class="fragment">Overhead, Ineffizienz, Zeitaufwand</li>
+                            <li class="fragment">"It depends" unzureichend als Entscheidungshelfer</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Braucht man ORM und wo sind seine Probleme?</h3>
+                        <img src="decision.gif">
+                   
+                    </section>
+                    <section>
+                        <h3>ORM: Nachteile</h3>
+                        <ul>
+                            <li class="fragment">Verkomplizierte Datentypen mit zu vielen Fremdschlüsseln</li>
+                            <li class="fragment">SQL-Kenntnisse für saubere Implementierungen nötig</li>
+                            <li class="fragment">Wieso sich um Umwandlungen in SQL Sorgen machen, wenn man es gleich in SQL schreiben kann?</li>
+                            <li class="fragment">Viel Overhead durch überflüssige Queries</li>
+                        </ul>    
+                        
+                    </section>
+                    <section>
+                        <h3>ORM: Vorteile</h3>
+                        <ul>
+                            <li class="fragment">Objekte wirken greifbarer als Tabellen während der Entwicklung</li>
+                            <li class="fragment">Wenig komplizierter SQL-Code</li>
+                            <li class="fragment">Neue Freiheiten und Features (z.B. lazy loading)</li>
+                            <li class="fragment">Unabhängigkeit von Datenbank</li>
+                            <li class="fragment"><b>Weniger Code</b></li>
+                            <li class="fragment">Ein einziges Objekt mit etlichen Attributen und unzähligen Joins lässt sich problemlos verarbeiten</li>
+                        </ul>    
+                        
+                    </section>
+                    <section data-background="end.gif">
+                        <img style="border-radius: 50%;" src="gavin.jpg" width="20%">
+                        Gavin King:<q>Just because you're using hibernate, doesn't mean you have to use it for <b>everything</b>.</q>
+                    </section>
+                </section>
+                
+                
+                
 			</div>
 		</div>
 
@@ -44,6 +389,7 @@
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
+            Reveal.configure({ slideNumber: 'c/t' });
 		</script>
 	</body>
 </html>
